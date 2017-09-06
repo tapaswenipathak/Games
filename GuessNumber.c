@@ -1,5 +1,7 @@
+
 #include <stdio.h>
 #include <time.h>
+#include <windows.h>
 
 void rules ();
 void draw (int, char);
@@ -20,7 +22,7 @@ int main()
 
 	printf ("\n\nEnter Your Name : ");
 	scanf ("%s", player_name);
-
+    system ("cls");
 	printf ("Hi %s!", player_name);
 	printf("\n\nEnter amount to start the game : Rs. ");
 	scanf ("%d", &amt);
@@ -48,7 +50,6 @@ int main()
 		}while (guess <= 0 || guess > 29);
 
 		dice = rand () % 29 + 1;
-
 		if (dice == guess)
 		{
 			printf ("Cool, You won. You get Rs. %d more", bett_amt * 5);
@@ -57,11 +58,13 @@ int main()
 		else
 		{
 			printf ("woops, You loose. You lost Rs. %d", bett_amt);
+			printf ("\n The ruleta says: %d", dice);
 			amt = amt - bett_amt;
 		}
 
 		if (amt <= 0)
 		{
+		    system("cls");
 			printf ("You have no money :(");
 			break;
 		}
@@ -71,16 +74,17 @@ int main()
 	}while (choice[0] == 'Y' || choice[0] == 'y');
 
 	printf ("\n\n\n");
-
+    system("cls");
 	draw (70, '=');
 
-	printf ("\n\n Thanks for palying. :) Your balance amount is Rs. %d\n\n", amt);
+	printf ("\n\n Thanks for playing. :) Your balance amount is Rs. %d\n\n", amt);
 	draw (70,'=');
 	return 0;
 }
 
 void rules ()
 {
+    system("cls");
 	printf ("\n\n");
 	draw (80, '-');
 	printf ("\n");
