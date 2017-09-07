@@ -67,12 +67,23 @@ int main()
         cout << "Invalid number! please press again" << endl;
         cin >> yes_or_no;
     }
-    if (yes_or_no == 2)
+    if (yes_or_no == 2){
         play_again = false;
 	}
+    board[1] = '1';
+    board[2] = '2';
+    board[3] = '3';
+    board[4] = '4';
+    board[5] = '5';
+    board[6] = '6';
+    board[7] = '7';
+    board[8] = '8';
+    board[9] = '9';
+    }
 	cout << "Thanks for play!" << endl;
 	return 0;
 }
+
 
 void gameplay(char mark_x_o, int box_no,int player){
 
@@ -286,6 +297,7 @@ char showBoard(char bord)
 }
 void Select_character(){
 
+    bool como_quieras = false;
     color(15);
     cout << " Player 1 please select your character!: ";
     cin >> player1;
@@ -295,12 +307,21 @@ void Select_character(){
     }
     cout << " Player 2 please select yours too!: ";
     cin >> player2;
-    while (player1 == player2){
-        cout << " You can't have the same character as player 1, please select another!: ";
-        cin >> player2;
-        while ((int)player2 >47 && (int)player2 <58){
+
+    while (como_quieras == false){
+    if ((int)player2 >47 && (int)player2 <58){
             cout << " You can't select a number, please select another!: ";
             cin >> player2;
+            como_quieras = false;
+     }
+    else if (player1 == player2){
+        cout << " You can't have the same character as player 1, please select another!: ";
+        cin >> player2;
+        como_quieras = false;
+    }
+    else
+    {
+        como_quieras = true;
     }
     }
 
