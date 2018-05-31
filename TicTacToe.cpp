@@ -1,329 +1,520 @@
-/*
- * Simple Tic Tac Toe Game.
- * Compile : g++ TicTacToe.cpp
- * Run : ./a.out
- */
-
 #include <iostream>
 #include <cstdlib>
-#include <stdlib.h>
+#include <algorithm>
 #include <windows.h>
-
 using namespace std;
 
-char board[10] = {'o', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+static int Board[3][3],score1=0,score2=0;
+const int player1=50,player2=100;
+static int Result=0;
+char Out_Board[3][3]={{'1','2','3'},{'4','5','6'},{'7','8','9'}};
+string pl1,pl2;
 
-int check_win();
-void board_status();
-void gameplay(char, int, int);
-void color(int X);
-void Select_character();
-char showBoard(char bord);
-char player1;
-char player2;
+// Initialization and Welcome design FUNCTION //
 
-
-/*
- * Driver Function.
- */
-int main()
+int initialize()
 {
-    bool play_again = true;
-    int yes_or_no = 0;
-
-    while (play_again == true){
-    system("cls");
-	int player = 1;
-	int i, box_no;
-
-	char mark_x_o;
-    Select_character();
-    //gameplay();
-	do
-	{
-	    system("cls");
-	    color(14);
-        cout << endl << " Get Ready to Play Tic Tac Toe " << endl << endl;
-		board_status();
-		player = player % 2 ? 1 : 2;
-        gameplay(mark_x_o,box_no,player);
-		i = check_win();
-		player++;
-
-	}while (i == -1);
-
-    system("CLS");
-    color(14);
-    cout << endl << " Get Ready to Play Tic Tac Toe " << endl << endl;
-	board_status();
-    color(15);
-	if (i == 1)
-		cout << endl << " Player " << --player << " Won" << endl;
-	else
-		cout << endl <<  " Game Draw!" << endl;
-    cout << " Another game? Press 1 for yes or press 2 for no" << endl;
-    cin >> yes_or_no;
-    while (yes_or_no != 1 && yes_or_no != 2){
-        cout << "Invalid number! please press again" << endl;
-        cin >> yes_or_no;
-    }
-    if (yes_or_no == 2){
-        play_again = false;
-	}
-    board[1] = '1';
-    board[2] = '2';
-    board[3] = '3';
-    board[4] = '4';
-    board[5] = '5';
-    board[6] = '6';
-    board[7] = '7';
-    board[8] = '8';
-    board[9] = '9';
-    }
-	cout << "Thanks for play!" << endl;
-	return 0;
-}
-
-
-void gameplay(char mark_x_o, int box_no,int player){
-
-    cout << endl << " Player " << player << ", enter a number to place an " << player1 << " or " << player2 << ": ";
-    cin >> box_no;
-    while (cin.fail() || box_no < 1 || box_no > 9 || box_no!= (int)board[box_no]-'0'){
-        cin.clear();
-        cin.ignore();
-        cout << " Invalid Move!" << endl;
-        cout << " Player " << player << ", enter a number to " << player1 << " or " << player2 << ": ";
-        cin >> box_no;
-    }
-
-    mark_x_o = player == 1 ? player1 : player2;
-
-    if (box_no == 1 && board[1] == '1')
-        board[1] = mark_x_o;
-
-    else if (box_no == 2 && board[2] == '2')
-        board[2] = mark_x_o;
-
-    else if (box_no == 3 && board[3] == '3')
-        board[3] = mark_x_o;
-
-    else if (box_no == 4 && board[4] == '4')
-        board[4] = mark_x_o;
-
-    else if (box_no == 5 && board[5] == '5')
-        board[5] = mark_x_o;
-
-    else if (box_no == 6 && board[6] == '6')
-        board[6] = mark_x_o;
-
-    else if (box_no == 7 && board[7] == '7')
-        board[7] = mark_x_o;
-
-    else if (box_no == 8 && board[8] == '8')
-        board[8] = mark_x_o;
-
-    else if (box_no == 9 && board[9] == '9')
-        board[9] = mark_x_o;
-}
-
-
-/* -1 : Game in progress.
- *  0 : Game over. No result.
- *  1 : Game over. with result.
- */
-int check_win ()
-{
-	if (board[1] == board[2] && board[2] == board[3])
-		return 1;
-
-	else if (board[4] == board[5] && board[5] == board[6])
-		return 1;
-
-	else if (board[7] == board[8] && board[8] == board[9])
-		return 1;
-
-	else if (board[1] == board[4] && board[4] == board[7])
-		return 1;
-
-	else if (board[2] == board[5] && board[5] == board[8])
-		return 1;
-
-	else if (board[3] == board[6] && board[6] == board[9])
-		return 1;
-
-	else if (board[1] == board[5] && board[5] == board[9])
-		return 1;
-
-	else if (board[3] == board[5] && board[5] == board[7])
-		return 1;
-
-	else{
-        bool done = true;
-        for (int i=1;i<9;i++){
-            if (i==(int)board[i]-'0'){
-                done = false;
-                break;
-            }
-
-        }
-
-		if (done) return 0;
-    }
-
-	return -1;
-}
-
-/*
- * Drawing the board.
- */
-void board_status ()
-{
-    char vertical = ((char)186);
-    char horizontal = ((char)205);
-    char mid = ((char)206);
-
-    color(15);
-
-	cout << "       " << vertical << "       " << vertical << "       " << endl;
-
-	cout << "      " << showBoard(board[1]);
-
-	color(15);
-
-	cout << vertical;
-
-	cout << "      " << showBoard(board[2]);
-
-	color(15);
-
-	cout << vertical;
-
-	cout << "     " << showBoard(board[3]);
-
-	color(15);
-
-	cout << endl;
-
-	for(int i = 0; i < 7; i ++) cout << horizontal;
-
-	cout << mid;
-
-	for(int i = 0; i < 7; i ++) cout << horizontal;
-
-	cout << mid;
-
-	for(int i = 0; i < 7; i ++) cout << horizontal;
-
-	cout << endl;
-
-	cout << "       " << vertical << "       " << vertical << "        " << endl;
-
-    cout << "      " << showBoard(board[4]);
-
-	color(15);
-
-	cout << vertical;
-
-	cout << "      " << showBoard(board[5]);
-
-	color(15);
-
-	cout << vertical;
-
-	cout << "     " << showBoard(board[6]);
-
-	color(15);
-
-	cout << endl;
-
-	for(int i = 0; i < 7; i ++) cout << horizontal;
-
-	cout << mid;
-
-	for(int i = 0; i < 7; i ++) cout << horizontal;
-
-	cout << mid;
-
-	for(int i = 0; i < 7; i ++) cout << horizontal;
-
-	cout << endl;
-
-    cout << "      " << showBoard(board[7]);
-
-	color(15);
-
-	cout << vertical;
-
-	cout << "      " << showBoard(board[8]);
-
-	color(15);
-
-	cout << vertical;
-
-	cout << "     " << showBoard(board[9]);
-
-	color(15);
-
-	cout << endl;
-
-	cout << "       " << vertical << "       " << vertical << "       " << endl;
-
-
-
-}
-
-void color(int X)
-{
-    SetConsoleTextAttribute(GetStdHandle (STD_OUTPUT_HANDLE),X);
-}
-
-char showBoard(char bord)
-{
-
-        if(bord == player1)
+    int i,j,counter=0;
+    for(i=0; i<3; i++)
+    {
+        for(j=0; j<3; j++)
         {
-            color(11);
+            ++counter;
+            Board[i][j]=counter;
         }
-        else if(bord == player2)
+    }
+    cout<<"\t\t\tPRESS ENTER TO PLAY TIC_TAC_TOE ;)\t\t\t\n";
+    cout.width(29);
+    cout.fill(' ');
+    cout<<"";
+    cout.width(24);
+    cout.fill('#');
+    cout<<"\n";
+    for(i=0; i<3; i++)
+    {
+        cout.width(30);
+        cout.fill(' ');
+        cout<<"#";
+        if(i==1)
         {
-            color(12);
+            cout.width(14);
+            cout.fill(' ');
+            cout<<"WELCOME";
+            cout.width(9);
         }
         else
         {
-            color(15);
+            cout.width(23);
         }
-        return bord;
-}
-void Select_character(){
-
-    bool como_quieras = false;
-    color(15);
-    cout << " Player 1 please select your character!: ";
-    cin >> player1;
-    while ((int)player1 >47 && (int)player1 <58){
-    cout << " You can't select a number, please select another!: ";
-    cin >> player1;
+        cout.fill(' ');
+        cout<<"#\n";
     }
-    cout << " Player 2 please select yours too!: ";
-    cin >> player2;
+    cout.width(29);
+    cout.fill(' ');
+    cout<<"";
+    cout.width(24);
+    cout.fill('#');
+    cout<<"\n";
+    if(cin.get()=='\n')
+    {
+        system("CLS");
+        return 0;
+    }
+}
 
-    while (como_quieras == false){
-    if ((int)player2 >47 && (int)player2 <58){
-            cout << " You can't select a number, please select another!: ";
-            cin >> player2;
-            como_quieras = false;
-     }
-    else if (player1 == player2){
-        cout << " You can't have the same character as player 1, please select another!: ";
-        cin >> player2;
-        como_quieras = false;
+// OUTPUT LOGIC WHICH USER CAN SEE //
+
+void board_logic()
+{
+
+    cout<<"\t\t\t"<<pl1<<"'s SCORE : "<<score1<<"\t\t\t"<<endl<<endl;
+    cout<<"\t\t\t"<<pl2<<"'s SCORE : "<<score2<<"\t\t\t"<<endl<<endl;
+    cout << "     |     |     " << endl;
+	cout << "  " << Out_Board[0][0] << "  |  " << Out_Board[0][1] << "  |  " << Out_Board[0][2] << endl;
+	cout << "_____|_____|_____" << endl;
+	cout << "     |     |     " << endl;
+	cout << "  " << Out_Board[1][0] << "  |  " << Out_Board[1][1] << "  |  " << Out_Board[1][2] << endl;
+	cout << "_____|_____|_____" << endl;
+	cout << "     |     |     " << endl;
+	cout << "  " << Out_Board[2][0] << "  |  " << Out_Board[2][1] << "  |  " << Out_Board[2][2] << endl;
+	cout << "     |     |     " << endl << endl;
+}
+
+// INPUT LOGIC WHICH USER CAN'T SEE //
+
+int arr_logic(int n,const int khiladi,int check)
+{
+    int i,j;
+    for(i=0; i<3; i++)
+    {
+        for(j=0; j<3; j++)
+        {
+            if(Board[i][j]==n)
+            {
+                Board[i][j]=khiladi;
+            }
+        }
+    }
+    if(check>=5)
+    {
+        if(((Board[0][0]==Board[0][1])&&(Board[0][1]==Board[0][2]))&&(Board[0][0]==khiladi))
+            return khiladi;
+        else if(((Board[1][0]==Board[1][1])&&(Board[1][1]==Board[1][2]))&&(Board[1][0]==khiladi))
+            return khiladi;
+        else if(((Board[2][0]==Board[2][1])&&(Board[2][1]==Board[2][2]))&&(Board[2][0]==khiladi))
+            return khiladi;
+        else if(((Board[0][0]==Board[1][0])&&(Board[1][0]==Board[2][0]))&&(Board[0][0]==khiladi))
+            return khiladi;
+        else if(((Board[0][1]==Board[1][1])&&(Board[1][1]==Board[2][1]))&&(Board[0][1]==khiladi))
+            return khiladi;
+        else if(((Board[0][2]==Board[1][2])&&(Board[1][2]==Board[2][2]))&&(Board[0][2]==khiladi))
+            return khiladi;
+        else if(((Board[0][0]==Board[1][1])&&(Board[1][1]==Board[2][2]))&&(Board[0][0]==khiladi))
+            return khiladi;
+        else if(((Board[0][2]==Board[1][1])&&(Board[1][1]==Board[2][0]))&&(Board[0][2]==khiladi))
+            return khiladi;
+        else
+            return 0;
+    }
+    else
+        return 0;
+}
+
+// Reset values for next use //
+
+void reset()
+{
+    int i,j,counter=0;
+    for(i=0; i<3; i++)
+    {
+        for(j=0; j<3; j++)
+        {
+            ++counter;
+            Board[i][j]=counter;
+        }
+    }
+    Out_Board[0][0]='1';
+    Out_Board[0][1]='2';
+    Out_Board[0][2]='3';
+    Out_Board[1][0]='4';
+    Out_Board[1][1]='5';
+    Out_Board[1][2]='6';
+    Out_Board[2][0]='7';
+    Out_Board[2][1]='8';
+    Out_Board[2][2]='9';
+}
+
+int main()
+{
+    int i=0,n,flag=0,ins=0;
+    system("color 5E");
+    char ch;
+    initialize();
+    cout<<"NAME OF FIRST PLAYER : ";
+    cin>>pl1;
+    cout<<"\n\nNAME OF SECOUND PLAYER : ";
+    cin>>pl2;
+    do {
+    system("CLS");
+    i=0;
+    cout<<"PLAYER 1("<<pl1<<") --> X";
+    cout<<"\n\nPLAYER 2("<<pl2<<") --> O\n\n";
+    board_logic();
+    while(true)
+    {
+        ++i;
+        top:
+        if((i>9)&&(Result==0))
+        {
+            system("CLS");
+            cout<<"\nCONGRATULATION YOU BOTH ARE GENIUS.....\n\n\tTHIS IS A DRAW :(\n\n\n\n";
+            board_logic();
+            goto down;
+        }
+        flag=0;
+        if(i%2!=0)
+        {
+            cout<<"\n\nPLAYER 1("<<pl1<<") --> IT'S YOUR TURN\n\n";
+            flag=1;
+        }
+        else
+        {
+            cout<<"\n\nPLAYER 2("<<pl2<<") --> IT'S YOUR TURN\n\n";
+            flag=0;
+        }
+        J:
+        cin>>n;
+        if(n==ins)
+        {
+            goto J;
+        }
+        ins=n;
+        switch(n)
+        {
+            case 1:
+                if(flag==1)
+                {
+                    system("CLS");
+                    Out_Board[0][0]='X';
+                    board_logic();
+                    Result=arr_logic(n,player1,i);
+                    if(Result==50)
+                    {
+                        score1+=1;
+                        system("CLS");
+                        cout<<"\n\nCONGRATULATIONS < "<<pl1<<" > WON THIS GAME\n\n";
+                        cout<<"YOUR SCORE : "<<score1<<"\n\n";
+                        board_logic();
+                        goto down;
+                    }
+                }
+                else
+                {
+                    system("CLS");
+                    Out_Board[0][0]='O';
+                    board_logic();
+                    Result=arr_logic(n,player2,i);
+                    if(Result==100)
+                    {
+                        score2+=1;
+                        system("CLS");
+                        cout<<"\n\nCONGRATULATIONS < "<<pl2<<" > WON THIS GAME\n\n";
+                        cout<<"YOUR SCORE : "<<score2<<endl;
+                        board_logic();
+                        goto down;
+                    }
+                }
+                break;
+            case 2:
+                if(flag==1)
+                {
+                    system("CLS");
+                    Out_Board[0][1]='X';
+                    board_logic();
+                    Result=arr_logic(n,player1,i);
+                    if(Result==50)
+                    {
+                        score1+=1;
+                        system("CLS");
+                        cout<<"\n\nCONGRATULATIONS < "<<pl1<<" > WON THIS GAME\n\n";
+                        cout<<"YOUR SCORE : "<<score1<<"\n\n";
+                        board_logic();
+                        goto down;
+                    }
+                }
+                else
+                {
+                    system("CLS");
+                    Out_Board[0][1]='O';
+                    board_logic();
+                    Result=arr_logic(n,player2,i);
+                    if(Result==100)
+                    {
+                        score2+=1;
+                        system("CLS");
+                        cout<<"\n\nCONGRATULATIONS < "<<pl2<<" > WON THIS GAME\n\n";
+                        cout<<"YOUR SCORE : "<<score2<<endl;
+                        board_logic();
+                        goto down;
+                    }
+                }
+                break;
+            case 3:
+                if(flag==1)
+                {
+                    system("CLS");
+                    Out_Board[0][2]='X';
+                    board_logic();
+                    Result=arr_logic(n,player1,i);
+                    if(Result==50)
+                    {
+                        score1+=1;
+                        system("CLS");
+                        cout<<"\n\nCONGRATULATIONS < "<<pl1<<" > WON THIS GAME\n\n";
+                        cout<<"YOUR SCORE : "<<score1<<"\n\n";
+                        board_logic();
+                        goto down;
+                    }
+                }
+                else
+                {
+                    system("CLS");
+                    Out_Board[0][2]='O';
+                    board_logic();
+                    Result=arr_logic(n,player2,i);
+                    if(Result==100)
+                    {
+                        score2+=1;
+                        system("CLS");
+                        cout<<"\n\nCONGRATULATIONS < "<<pl2<<" > WON THIS GAME\n\n";
+                        cout<<"YOUR SCORE : "<<score2<<endl;
+                        board_logic();
+                        goto down;
+                    }
+                }
+                break;
+            case 4:
+                if(flag==1)
+                {
+                    system("CLS");
+                    Out_Board[1][0]='X';
+                    board_logic();
+                    Result=arr_logic(n,player1,i);
+                    if(Result==50)
+                    {
+                        score1+=1;
+                        system("CLS");
+                        cout<<"\n\nCONGRATULATIONS < "<<pl1<<" > WON THIS GAME\n\n";
+                        cout<<"YOUR SCORE : "<<score1<<"\n\n";
+                        board_logic();
+                        goto down;
+                    }
+                }
+                else
+                {
+                    system("CLS");
+                    Out_Board[1][0]='O';
+                    board_logic();
+                    Result=arr_logic(n,player2,i);
+                    if(Result==100)
+                    {
+                        score2+=1;
+                        system("CLS");
+                        cout<<"\n\nCONGRATULATIONS < "<<pl2<<" > WON THIS GAME\n\n";
+                        cout<<"YOUR SCORE : "<<score2<<endl;
+                        board_logic();
+                        goto down;
+                    }
+                }
+                break;
+            case 5:
+                if(flag==1)
+                {
+                    system("CLS");
+                    Out_Board[1][1]='X';
+                    board_logic();
+                    Result=arr_logic(n,player1,i);
+                    if(Result==50)
+                    {
+                        score1+=1;
+                        system("CLS");
+                        cout<<"\n\nCONGRATULATIONS < "<<pl1<<" > WON THIS GAME\n\n";
+                        cout<<"YOUR SCORE : "<<score1<<"\n\n";
+                        board_logic();
+                        goto down;
+                    }
+                }
+                else
+                {
+                    system("CLS");
+                    Out_Board[1][1]='O';
+                    board_logic();
+                    Result=arr_logic(n,player2,i);
+                    if(Result==100)
+                    {
+                        score2+=1;
+                        system("CLS");
+                        cout<<"\n\nCONGRATULATIONS < "<<pl2<<" > WON THIS GAME\n\n";
+                        cout<<"YOUR SCORE : "<<score2<<endl;
+                        board_logic();
+                        goto down;
+                    }
+                }
+                break;
+            case 6:
+                if(flag==1)
+                {
+                    system("CLS");
+                    Out_Board[1][2]='X';
+                    board_logic();
+                    Result=arr_logic(n,player1,i);
+                    if(Result==50)
+                    {
+                        system("CLS");
+                        score1+=1;
+                        cout<<"\n\nCONGRATULATIONS < "<<pl1<<" > WON THIS GAME\n\n";
+                        cout<<"YOUR SCORE : "<<score1<<"\n\n";
+                        board_logic();
+                        goto down;
+                    }
+                }
+                else
+                {
+                    system("CLS");
+                    Out_Board[1][2]='O';
+                    board_logic();
+                    Result=arr_logic(n,player2,i);
+                    if(Result==100)
+                    {
+                        score2+=1;
+                        system("CLS");
+                        cout<<"\n\nCONGRATULATIONS < "<<pl2<<" > WON THIS GAME\n\n";
+                        cout<<"YOUR SCORE : "<<score2<<endl;
+                        board_logic();
+                        goto down;
+                    }
+                }
+                break;
+            case 7:
+                if(flag==1)
+                {
+                    system("CLS");
+                    Out_Board[2][0]='X';
+                    board_logic();
+                    Result=arr_logic(n,player1,i);
+                    if(Result==50)
+                    {
+                        score1+=1;
+                        system("CLS");
+                        cout<<"\n\nCONGRATULATIONS < "<<pl1<<" > WON THIS GAME\n\n";
+                        cout<<"YOUR SCORE : "<<score1<<"\n\n";
+                        board_logic();
+                        goto down;
+                    }
+                }
+                else
+                {
+                    system("CLS");
+                    Out_Board[2][0]='O';
+                    board_logic();
+                    Result=arr_logic(n,player2,i);
+                    if(Result==100)
+                    {
+                        score2+=1;
+                        system("CLS");
+                        cout<<"\n\nCONGRATULATIONS < "<<pl2<<" > WON THIS GAME\n\n";
+                        cout<<"YOUR SCORE : "<<score2<<endl;
+                        board_logic();
+                        goto down;
+                    }
+                }
+                break;
+            case 8:
+                if(flag==1)
+                {
+                    system("CLS");
+                    Out_Board[2][1]='X';
+                    board_logic();
+                    Result=arr_logic(n,player1,i);
+                    if(Result==50)
+                    {
+                        score1+=1;
+                        system("CLS");
+                        cout<<"\n\nCONGRATULATIONS < "<<pl1<<" > WON THIS GAME\n\n";
+                        cout<<"YOUR SCORE : "<<score1<<"\n\n";
+                        board_logic();
+                        goto down;
+                    }
+                }
+                else
+                {
+                    system("CLS");
+                    Out_Board[2][1]='O';
+                    board_logic();
+                    Result=arr_logic(n,player2,i);
+                    if(Result==100)
+                    {
+                        score2+=1;
+                        system("CLS");
+                        cout<<"\n\nCONGRATULATIONS < "<<pl2<<" > WON THIS GAME\n\n";
+                        cout<<"YOUR SCORE : "<<score2<<endl;
+                        board_logic();
+                        goto down;
+                    }
+                }
+                break;
+            case 9:
+                if(flag==1)
+                {
+                    system("CLS");
+                    Out_Board[2][2]='X';
+                    board_logic();
+                    Result=arr_logic(n,player1,i);
+                    if(Result==50)
+                    {
+                        score1+=1;
+                        system("CLS");
+                        cout<<"\n\nCONGRATULATIONS < "<<pl1<<" > WON THIS GAME\n\n";
+                        cout<<"YOUR SCORE : "<<score1<<"\n\n";
+                        board_logic();
+                        goto down;
+                    }
+                }
+                else
+                {
+                    system("CLS");
+                    Out_Board[2][2]='O';
+                    board_logic();
+                    Result=arr_logic(n,player2,i);
+                    if(Result==100)
+                    {
+                        score2+=1;
+                        system("CLS");
+                        cout<<"\n\nCONGRATULATIONS < "<<pl2<<" > WON THIS GAME\n\n";
+                        cout<<"YOUR SCORE : "<<score2<<endl;
+                        board_logic();
+                        goto down;
+                    }
+                }
+                break;
+            default:
+                cout<<"\n\nWRONG CHOICE ENTERED :(";
+                goto top;
+        }
+    }
+    down:
+    cout<<"\n\nDO YOU WANT TO CONTINUE THIS RIVALRY <Y/N>\n\n--> ";
+    cin>>ch;
+    if((ch=='y')||(ch=='Y'))
+    {
+        i=0;
+        reset();
     }
     else
     {
-        como_quieras = true;
+        exit(0);
     }
-    }
+    }while((ch=='y')||(ch=='Y'));
 
-    return;
+    return 0;
 }
