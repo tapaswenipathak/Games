@@ -1,6 +1,6 @@
 /*
  * Simple Tic Tac Toe Game.
- * Compile : g++ TicTacToe.cpp
+ * Compile : g++ TicTacToewcolor.cpp
  * Run : ./a.out
  */
 
